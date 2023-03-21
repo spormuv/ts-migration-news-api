@@ -1,39 +1,46 @@
+import { ENDPOINTS } from '../../types/types';
 import AppLoader from './appLoader';
 
 class AppController extends AppLoader {
-    getSources(callback) {
-        super.getResp(
+  public getSources<Data>(callback: (data: Readonly<Data>) => void): void {
+    super.getResp(
+      {
+        endpoint: ENDPOINTS.sources,
+      },
+      callback
+    );
+  }
+
+  public getNews<Data>(
+    e: PointerEvent,
+    callback: (data: Readonly<Data>) => void
+  ): void {
+    let target = e.target as Element;
+    const newsContainer = e.currentTarget as Element;
+
+    while (target !== newsContainer) {
+      if (target.classList.contains('source__item')) {
+        const sourceId = target.getAttribute('data-source-id');
+        if (
+          sourceId &&
+          newsContainer.getAttribute('data-source') !== sourceId
+        ) {
+          newsContainer.setAttribute('data-source', sourceId);
+          super.getResp(
             {
-                endpoint: 'sources',
+              endpoint: ENDPOINTS.everything,
+              options: {
+                sources: sourceId,
+              },
             },
             callback
-        );
-    }
-
-    getNews(e, callback) {
-        let target = e.target;
-        const newsContainer = e.currentTarget;
-
-        while (target !== newsContainer) {
-            if (target.classList.contains('source__item')) {
-                const sourceId = target.getAttribute('data-source-id');
-                if (newsContainer.getAttribute('data-source') !== sourceId) {
-                    newsContainer.setAttribute('data-source', sourceId);
-                    super.getResp(
-                        {
-                            endpoint: 'everything',
-                            options: {
-                                sources: sourceId,
-                            },
-                        },
-                        callback
-                    );
-                }
-                return;
-            }
-            target = target.parentNode;
+          );
         }
+        return;
+      }
+      target = target.parentNode as Element;
     }
+  }
 }
 
 export default AppController;

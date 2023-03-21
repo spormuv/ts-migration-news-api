@@ -1,46 +1,52 @@
+import { GetRespObject, OptionsObj, Status } from '../../types/types';
+
 class Loader {
-    constructor(baseLink, options) {
-        this.baseLink = baseLink;
-        this.options = options;
+  constructor(protected baseLink: string, protected options: OptionsObj) {}
+
+  public getResp<Data>(
+    { endpoint, options = {} }: GetRespObject,
+    callback: (data: Readonly<Data>) => void = () => {
+      console.error('No callback for GET response');
+    }
+  ): void {
+    this.load('GET', endpoint, callback, options);
+  }
+
+  public errorHandler(res: Response): Response {
+    if (!res.ok) {
+      if (res.status === Status.error_401 || res.status === Status.error_404)
+        console.log(
+          `Sorry, but there is ${res.status} error: ${res.statusText}`
+        );
+      throw Error(res.statusText);
     }
 
-    getResp(
-        { endpoint, options = {} },
-        callback = () => {
-            console.error('No callback for GET response');
-        }
-    ) {
-        this.load('GET', endpoint, callback, options);
-    }
+    return res;
+  }
 
-    errorHandler(res) {
-        if (!res.ok) {
-            if (res.status === 401 || res.status === 404)
-                console.log(`Sorry, but there is ${res.status} error: ${res.statusText}`);
-            throw Error(res.statusText);
-        }
+  private makeUrl(options: OptionsObj, endpoint: string): string {
+    const urlOptions: OptionsObj = { ...this.options, ...options };
+    let url = `${this.baseLink}${endpoint}?`;
 
-        return res;
-    }
+    Object.keys(urlOptions).forEach(key => {
+      url += `${key}=${urlOptions[key]}&`;
+    });
 
-    makeUrl(options, endpoint) {
-        const urlOptions = { ...this.options, ...options };
-        let url = `${this.baseLink}${endpoint}?`;
+    return url.slice(0, -1);
+  }
 
-        Object.keys(urlOptions).forEach((key) => {
-            url += `${key}=${urlOptions[key]}&`;
-        });
-
-        return url.slice(0, -1);
-    }
-
-    load(method, endpoint, callback, options = {}) {
-        fetch(this.makeUrl(options, endpoint), { method })
-            .then(this.errorHandler)
-            .then((res) => res.json())
-            .then((data) => callback(data))
-            .catch((err) => console.error(err));
-    }
+  private load<Data>(
+    method: string,
+    endpoint: string,
+    callback: (data: Data) => void,
+    options: OptionsObj = {}
+  ): void {
+    fetch(this.makeUrl(options, endpoint), { method })
+      .then(this.errorHandler)
+      .then(res => res.json())
+      .then(data => callback(data))
+      .catch(err => console.error(err));
+  }
 }
 
 export default Loader;
