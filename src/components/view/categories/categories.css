@@ -1,0 +1,37 @@
+.dropdown {
+  padding: 10px 25px;
+  border: 2px solid #70d6ff;
+  border-radius: 8px;
+  background-color: black;
+  font-size: 18px;
+  color: #70d6ff;
+  text-transform: capitalize;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.capitalize {
+  text-transform: uppercase;
+}
+
+.dropdown:hover,
+.dropdown:focus {
+  border-color: #70d6ff;
+  box-shadow: 0 0.5em 0.5em -0.4em;
+  color: #70d6ff;
+  transform: translateY(-0.15em);
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  padding-bottom: 50px;
+}
+
+@media (max-width: 360px) {
+  .container {
+    justify-content: flex-start;
+  }
+}

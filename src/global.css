@@ -1,6 +1,11 @@
 body {
-  color: #fff;
-  background: #17181c;
+  background: radial-gradient(black 15%, transparent 16%) 0 0,
+    radial-gradient(black 15%, transparent 16%) 8px 8px,
+    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 0 1px,
+    radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%) 8px 9px;
+  background-size: 16px 16px;
+  background-color: #146c94;
+  color: #f6f1f1;
   font-family: sans-serif;
 }
 
@@ -14,22 +19,53 @@ header h1 {
 }
 
 footer {
-  height: 100px;
   display: flex;
+  width: 100%;
+  height: 100px;
   align-items: center;
-  justify-content: center;
 }
+
 footer .copyright {
   font-size: 14px;
-  color: #333;
+  color: #f6f1f1;
   text-align: center;
 }
 footer .copyright a {
-  color: #444;
+  color: #f6f1f1;
 }
 footer .copyright a:hover {
   color: #555;
 }
 footer .copyright:before {
   content: '©';
+}
+
+.rsschool-img {
+  height: 30px;
+}
+
+.github-img {
+  height: 30px;
+}
+
+.github,
+.rsschool {
+  padding: 5px;
+}
+
+.copyright {
+  margin: 0 auto;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+@media (max-width: 360px) {
+  .wrapper {
+    margin-left: 20px;
+  }
 }

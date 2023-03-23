@@ -1,9 +1,18 @@
+/* eslint-disable no-console */
+import { MINUS_ONE, ZERO } from '../../constants/constants';
 import { GetRespObject, OptionsObj, Status } from '../../types/types';
 
 class Loader {
-  constructor(protected baseLink: string, protected options: OptionsObj) {}
+  private baseLink: string;
 
-  public getResp<Data>(
+  private options: OptionsObj;
+
+  constructor(baseLink: string, options: OptionsObj) {
+    this.baseLink = baseLink;
+    this.options = options;
+  }
+
+  public getResponse<Data>(
     { endpoint, options = {} }: GetRespObject,
     callback: (data: Readonly<Data>) => void = () => {
       console.error('No callback for GET response');
@@ -32,7 +41,7 @@ class Loader {
       url += `${key}=${urlOptions[key]}&`;
     });
 
-    return url.slice(0, -1);
+    return url.slice(ZERO, MINUS_ONE);
   }
 
   private load<Data>(

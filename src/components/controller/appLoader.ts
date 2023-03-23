@@ -1,9 +1,9 @@
-import { apiKey, apiUrl } from '../../constants/appLink';
 import Loader from './loader';
+import { apiURL, apiKey } from '../../constants/appLink';
 
 class AppLoader extends Loader {
   constructor() {
-    super(apiUrl, {
+    super(apiURL, {
       apiKey,
     });
   }

@@ -1,9 +1,9 @@
-import { ENDPOINTS } from '../../types/types';
 import AppLoader from './appLoader';
+import { ENDPOINTS } from '../../constants/endpoints';
 
 class AppController extends AppLoader {
   public getSources<Data>(callback: (data: Readonly<Data>) => void): void {
-    super.getResp(
+    super.getResponse(
       {
         endpoint: ENDPOINTS.sources,
       },
@@ -26,7 +26,7 @@ class AppController extends AppLoader {
           newsContainer.getAttribute('data-source') !== sourceId
         ) {
           newsContainer.setAttribute('data-source', sourceId);
-          super.getResp(
+          super.getResponse(
             {
               endpoint: ENDPOINTS.everything,
               options: {
